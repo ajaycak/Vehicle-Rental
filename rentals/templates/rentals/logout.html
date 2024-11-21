@@ -1,0 +1,11 @@
+{% extends 'rentals/base.html' %}
+
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+    <section class="logout-section">
+        <h2>You have successfully logged out</h2>
+        <p>Thank you for using VehiRent. We hope to see you back soon!</p>
+        <p><a href="{% url 'home' %}" class="nav-link">Return to Home</a></p>
+    </section>
+{% endblock %}

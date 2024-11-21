@@ -1,0 +1,130 @@
+{% extends 'rentals/base.html' %}
+
+{% block content %}
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #52260755;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-header h2 {
+            font-size: 2em;
+            color: #333;
+        }
+
+        .profile-info {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .profile-info p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .bookings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .bookings-table th, .bookings-table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ef2e2e;
+        }
+
+        .bookings-table th {
+            background-color: #fbe70c;
+        }
+
+        .bookings-table tr:nth-child(even) {
+            background-color: #3945e6;
+        }
+
+        .bookings-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+
+<div class="profile-container">
+    <div class="profile-header">
+        <h2>Welcome, {{ user.username }}!</h2>
+        <p>Here are your profile details and bookings.</p>
+    </div>
+
+    <div class="profile-info">
+        <h3>Profile Information</h3>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>First Name:</strong> {{ user.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+    </div>
+
+    <h3>Your Bookings</h3>
+    {% if bookings %}
+        <table class="bookings-table">
+            <thead>
+                <tr>
+                    <th>Vehicle</th>
+                    <th>Booking Date</th>
+                    <th>Return Date</th>
+                    <th>Status</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.vehicle.model }}</td>
+                        <td>{{ booking.booking_date }}</td>
+                        <td>{{ booking.return_date }}</td>
+                        <td>{{ booking.status }}</td>
+                        <td>
+                            {% if booking.status == "Completed" and booking.rating is None %}
+                            <form method="POST">
+                                {% csrf_token %}
+                                {{ rating_form.as_p }}  <!-- Form to add rating -->
+                                <input type="hidden" name="booking_id" value="{{ booking.id }}">
+                                <button type="submit" class="btn">Submit Rating</button>
+                            </form>
+                        {% elif booking.rating %}
+                            <p>Rating: {{ booking.rating }} / 5</p>
+                        {% else %}
+                            <p>No rating available yet.</p>
+                        {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You have no bookings yet.</p>
+    {% endif %}
+
+    <a href="{% url 'update_profile' %}" class="btn">Update Profile</a>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+<!-- rentals/templates/rentals/contact.html -->
+{% extends 'rentals/base.html' %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<script>
+    function showSuccessMessage() {
+        const message = document.getElementById("success-message");
+        message.style.display = "block";  // Show the message
+        message.style.opacity = "1";      // Make it fully visible
+        
+        // After 3 seconds, start fading out
+        setTimeout(() => {
+            message.style.opacity = "0";
+            // Hide the message completely after fading out
+            setTimeout(() => {
+                message.style.display = "none";
+            }, 500);
+        }, 3000);  // Adjust time (in milliseconds) as needed
+    }
+</script>
+
+<div class="contact-container">
+    <!-- Success message block -->
+    {% if messages %}
+        <div class="message-success">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <div class="contact-video">
+        <video autoplay loop muted>
+            <source src="{% static 'rentals/video/ad.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="contact-form">
+        <form method="POST" action="{% url 'contact' %}">
+            {% csrf_token %}
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div id="success-message" class="message-success">Your message has been sent!</div>
+
+</div>
+{% if messages %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            showSuccessMessage();
+        });
+    </script>
+{% endif %}
+
+{% endblock %}
+

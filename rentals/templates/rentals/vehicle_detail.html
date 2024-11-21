@@ -1,0 +1,35 @@
+<!-- rentals/templates/rentals/vehicle_detail.html -->
+{% extends 'rentals/base.html' %}
+
+{% block content %}
+    <h2>Vehicle Details</h2>
+    <div class="vehicle-detail">
+        <h3>{{ vehicle.vehicle_type.name }} - {{ vehicle.model }}</h3>
+        <p><strong>Brand:</strong> {{ vehicle.brand }}</p>
+        <p><strong>Description:</strong> {{ vehicle.description }}</p>
+        <p><strong>Price per Day:</strong> ${{ vehicle.price }}</p>
+        
+        <!-- Display Rating -->
+        <div class="rating">
+            {% for i in filled_stars %}
+                <span class="filled-star">★</span>
+            {% endfor %}
+            {% for i in empty_stars %}
+                <span class="empty-star">★</span>
+            {% endfor %}
+        </div>
+
+        <h4>Book Now</h4>
+        {% if form %}
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Book Now</button>
+            </form>
+        {% endif %}
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,7 @@
+<!-- rentals/templates/rentals/booking_success.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Booking Successful!</h1>
+    <a href="{% url 'download_invoice' booking_id=booking.id %}" class="btn btn-primary">Download Invoice</a>
+{% endblock %}

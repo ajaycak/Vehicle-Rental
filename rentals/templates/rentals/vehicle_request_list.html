@@ -1,0 +1,29 @@
+<!-- vehicle_request_list.html -->
+{% extends "base.html" %}
+
+{% block title %}Vehicle Requests{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>Vehicle Requests</h2>
+    {% for request in vehicle_requests %}
+        <p>{{ request.vehicle_type }} - {{ request.model }} - Status: {{ request.status }}</p>
+        {% if request.status == 'Pending' %}
+            <form action="{% url 'approve_vehicle_request' request.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit">Approve</button>
+            </form>
+            <form action="{% url 'reject_vehicle_request' request.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit">Reject</button>
+            </form>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

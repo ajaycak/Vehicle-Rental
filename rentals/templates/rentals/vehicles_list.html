@@ -1,0 +1,54 @@
+{% extends 'rentals/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<h2>Available Vehicles</h2>
+
+<!-- Dropdown for Filtering by Vehicle Type -->
+<form method="get" action="" class="filter-form">
+    <label for="type">Filter by Vehicle Type:</label>
+    <select name="type" id="type" onchange="this.form.submit()">
+        <option value="">All</option>
+        {% for vehicle_type in vehicle_types %}
+        <option value="{{ vehicle_type.id }}" {% if vehicle_type.id == request.GET.type %}selected{% endif %}>
+            {{ vehicle_type.name }}
+        </option>
+        {% endfor %}
+    </select>
+</form>
+
+<!-- Banner for Recommended Vehicle -->
+{% if recommended_vehicle %}
+<div class="banner">
+    <img src="https://assets.gqindia.com/photos/627e4cb54845f366b07da838/16:9/w_1920,h_1080,c_limit/Tata%20Nexon%20EV%20Max%201.jpg" alt="Tata Nexon EV" class="banner-image">
+    <div class="banner-overlay">
+        <h2>{{ recommended_vehicle.vehicle_type.name }} - {{ recommended_vehicle.model }}</h2>
+        <p><strong>Brand:</strong> {{ recommended_vehicle.brand }}</p>
+        <p><strong>Description:</strong> {{ recommended_vehicle.description }}</p>
+        <p><strong>Price per Day:</strong> ₹{{ recommended_vehicle.price }}</p>
+        <a href="{% url 'vehicle_detail' recommended_vehicle.id %}" class="book-now-btn">Book Now</a>
+    </div>
+</div>
+{% else %}
+    <p>No recommended vehicle available.</p>
+{% endif %}
+
+<!-- Other Vehicles Section -->
+{% if other_vehicles %}
+    <div class="vehicles-grid">
+        {% for vehicle in other_vehicles %}
+        <div class="vehicle-card">
+            <img src="{% if vehicle.image %}{{ vehicle.image.url }}{% else %}/static/default_vehicle.jpg{% endif %}" alt="{{ vehicle.model }}" class="vehicle-image">
+            <h3>{{ vehicle.model }} - {{ vehicle.brand }}</h3>
+            <p><strong>Price per Day:</strong> ₹{{ vehicle.price }}</p>
+            <p><strong>Rating:</strong> {{ vehicle.rating }}⭐</p>
+            <a href="{% url 'vehicle_detail' vehicle.id %}" class="view-more-btn">View More</a>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No other vehicles available.</p>
+{% endif %}
+
+{% endblock %}

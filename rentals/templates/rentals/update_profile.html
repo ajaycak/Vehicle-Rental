@@ -1,0 +1,11 @@
+<!-- In your 'rentals/templates/rentals/update_profile.html' -->
+{% extends 'rentals/base.html' %}
+
+{% block content %}
+    <h2>Update Profile</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Changes</button>
+    </form>
+{% endblock %}

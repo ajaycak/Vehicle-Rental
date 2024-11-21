@@ -1,0 +1,11 @@
+<h2>Process Payment for {{ booking.vehicle.model }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <label for="payment_method">Payment Method:</label>
+    <select name="payment_method" id="payment_method">
+        <option value="Card">Card</option>
+        <option value="Cash">Cash</option>
+    </select>
+    <button type="submit">Confirm Payment</button>
+</form>
+

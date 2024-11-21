@@ -1,0 +1,29 @@
+<!-- home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home - Vehicle Rental System{% endblock %}
+
+{% block content %}
+    <h1>Welcome to the Vehicle Rental System!</h1>
+    <p>Here you can browse available vehicles, make bookings, and manage your vehicle requests.</p>
+
+    <h2>Available Vehicles</h2>
+    <ul>
+        {% for vehicle in vehicles %}
+            <li>
+                <a href="{% url 'vehicle_detail' vehicle.id %}">{{ vehicle.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if user.is_authenticated %}
+        <h2>My Bookings</h2>
+        <ul>
+            {% for booking in bookings %}
+                <li>{{ booking.vehicle.name }} - Status: {{ booking.status }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p><a href="{% url 'login' %}">Login</a> to view your bookings.</p>
+    {% endif %}
+{% endblock %}
