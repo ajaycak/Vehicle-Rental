@@ -108,7 +108,7 @@ PyMySQL==1.1.1
 pyparsing==3.1.1
 pyreadline3==3.4.1
 python-dateutil==2.8.2
-pytz==2024.1
+pytz
 pywin32
 PyYAML==6.0.2
 pyzmq==26.2.0
